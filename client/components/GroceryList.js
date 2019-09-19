@@ -16,7 +16,15 @@ const GroceryList = props => (
 );
 
 const mapState = state => ({
-  groceries: state.groceries,
+  groceries: state.groceries.filter(grocery => {
+    if (state.visibilityFilter === 'SHOW_BOUGHT') {
+      return grocery.bought === true;
+    } else if (state.visibilityFilter === 'SHOW_ACTIVE') {
+      return grocery.bought === false;
+    } else {
+      return grocery;
+    }
+  }),
 });
 
 const mapDispatch = dispatch => {

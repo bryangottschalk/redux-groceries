@@ -1,5 +1,38 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { setVisibilityFilter } from '../store';
 
-const Footer = () => <div className="footer">Placeholder for footer</div>;
+const Footer = props => (
+  <div className="footer">
+    <div>
+      <button type="button" onClick={() => props.visibilityFilter('SHOW_ALL')}>
+        All
+      </button>
+      <button
+        type="button"
+        onClick={() => props.visibilityFilter('SHOW_ACTIVE')}
+      >
+        Active
+      </button>
+      <button
+        type="button"
+        onClick={() => props.visibilityFilter('SHOW_BOUGHT')}
+      >
+        Bought
+      </button>
+    </div>
+  </div>
+);
 
-export default Footer;
+const mapDispatch = dispatch => {
+  return {
+    visibilityFilter: filterType => {
+      return dispatch(setVisibilityFilter(filterType));
+    },
+  };
+};
+
+export default connect(
+  null,
+  mapDispatch
+)(Footer);

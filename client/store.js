@@ -3,6 +3,8 @@ import loggerMiddleware from 'redux-logger';
 
 const ADD_GROCERY = 'ADD_GROCERY';
 const TOGGLE_GROCERY = 'TOGGLE_GROCERY';
+const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
+const SHOW_ALL = 'SHOW_ALL';
 
 let nextId = 0;
 export const addGrocery = text => ({
@@ -16,17 +18,23 @@ export const toggleGrocery = groceryId => ({
   id: groceryId,
 });
 
-const initialState = { groceries: [] };
+export const setVisibilityFilter = filterType => ({
+  type: SET_VISIBILITY_FILTER,
+  visibilityFilter: filterType,
+});
+
+const initialState = { groceries: [], visibilityFilter: SHOW_ALL };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_GROCERY:
+    case ADD_GROCERY: {
       const newGrocery = {
         id: action.id,
         text: action.text,
         bought: false,
       };
       return { ...state, groceries: [...state.groceries, newGrocery] };
-    case TOGGLE_GROCERY:
+    }
+    case TOGGLE_GROCERY: {
       const groceries = state.groceries.map(grocery => {
         if (grocery.id === action.id) {
           return { ...grocery, bought: !grocery.bought };
@@ -35,6 +43,10 @@ const reducer = (state = initialState, action) => {
         }
       });
       return { ...state, groceries };
+    }
+    case SET_VISIBILITY_FILTER: {
+      return { ...state, visibilityFilter: action.visibilityFilter };
+    }
     default:
       return state;
   }
